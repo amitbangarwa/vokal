@@ -1,0 +1,31 @@
+<div id="searchDetail" style="padding: 70px 50px">
+    <h3 style="color: white;text-align: center">All Search Details</h3>
+    <table class="table-class">
+        <thead>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Location</th>
+        <th>Phone Number</th>
+        <th>Rating</th>
+        <th>Reviews</th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="search in searchDetails | orderBy: id">
+            <td>{{search.name}}</td>
+            <td>{{search.address}}</td>
+            <td>
+                <div>Lat - {{search.location.lat | number: 2}}</div>
+                <div>Lng - {{search.location.lng | number: 2}}</div>
+            </td>
+            <td>{{search.phoneNumber}}</td>
+            <td>{{search.rating}}</td>
+            <td>
+                <div ng-repeat="review in search.reviews | limitTo: 1">
+                    <div>{{review.text}}</div>
+                    <div>- <strong>{{review.author_name}}</strong></div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,40 @@
+<div class="container" layout="column" layout-align="center center">
+    <div style="margin: 50px;">
+        <div class="search-bar md-whiteframe-4dp" flex
+             layout-align="start center" layout="row">
+            <span class="mdi mdi-magnify"></span>
+            <input type="text" googleplace class="search-input" placeholder="Search name or address" ng-model="searchText">
+        </div>
+    </div>
+    <div ng-if="searchData" style="margin: 150px 50px 50px">
+        <h3 style="color: white;text-align: center">All Search Details</h3>
+        <table class="table-class">
+            <thead>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Location</th>
+            <th>Phone Number</th>
+            <th>Rating</th>
+            <th>Reviews</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{searchData.name}}</td>
+                <td>{{searchData.address}}</td>
+                <td>
+                    <div>Lat - {{searchData.location.lat | number: 2}}</div>
+                    <div>Lng - {{searchData.location.lng | number: 2}}</div>
+                </td>
+                <td>{{searchData.phoneNumber}}</td>
+                <td>{{searchData.rating}}</td>
+                <td>
+                    <div ng-repeat="review in searchData.reviews | limitTo: 1">
+                        <div>{{review.text}}</div>
+                        <div>- <strong>{{review.author_name}}</strong></div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

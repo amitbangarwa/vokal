@@ -1,0 +1,73 @@
+<html lang="en" ng-app="vokal">
+<head>
+    <title>Vokal</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no"/>
+    <meta name="theme-color" content="#3f51b5">
+    <!--<link rel="manifest" href="/manifest.json">-->
+    <link href="/bower_components/mdi/css/materialdesignicons.css" rel="stylesheet">
+    <link href="/bower_components/angular-material/angular-material.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <base href="/">
+</head>
+<body ng-cloak class="md-primary" ng-class="theme">
+<div class="loader">
+    <div style="height:100%;" layout="row" layout-align="center center">
+        <div class="logo-text-loader">
+            Vokal
+        </div>
+    </div>
+</div>
+<div ng-controller="navController" style="position: fixed; width: 100%; z-index: 100;">
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+            <div class="logo">
+            </div>
+            <a class="logo-text" ui-sref="dashboard" flex="100" flex-gt-xs="20" md-truncate>
+                Vokal
+            </a>
+            <span flex></span>
+            <md-menu hide-xs md-position-mode="target-right target">
+                <div class="color md-icon-button" ng-class="theme" md-ink-ripple ng-click="$mdMenu.open($event)">
+                </div>
+                <md-menu-content width="3">
+                    <md-menu-item ng-repeat="theme in themes">
+                        <md-button ng-click="setTheme(theme)">
+                            <div layout="row" flex>
+                                <p flex>{{theme.name}}</p>
+                                <div class="color" ng-class="theme.class"></div>
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <a ng-if="isLoggedIn" ng-click="goTo('search')" style="margin: 0 10px">
+                <md-button aria-label="Search">
+                    Search List
+                </md-button>
+            </a>
+            <a ng-if="isLoggedIn" ng-click="logout()">
+                <md-button aria-label="Logout">
+                    Logout
+                </md-button>
+            </a>
+        </div>
+    </md-toolbar>
+</div>
+<div ui-view>
+
+</div>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKUkZ4X7ATnZ_qG0cSASu8owPGv7MnmiM&libraries=places"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/bower_components/angular-aria/angular-aria.js"></script>
+<script src="/bower_components/angular-messages/angular-messages.js"></script>
+<script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="/bower_components/angular-material/angular-material.js"></script>
+<script src="/bower_components/angular-jwt/dist/angular-jwt.js"></script>
+<script src="/js/angular/app.js"></script>
+
+
+</body>
+</html>
