@@ -49,10 +49,6 @@ vokal.service('SessionService', function ($rootScope) {
         this.broadcastLogin();
     };
 
-    this.updateUser = function (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-    };
-
     this.removeUser = function () {
         localStorage.clear();
         this.broadcastLogout();
@@ -187,13 +183,13 @@ vokal.controller('authController', ['$scope', '$rootScope', '$state', 'authApi',
         };
     }]);
 
-vokal.directive('googleplace', ['$rootScope', function($rootScope) {
+vokal.directive('googleplace', ['$rootScope', function ($rootScope) {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, model) {
+        link: function (scope, element, attrs, model) {
             var autocomplete = new google.maps.places.Autocomplete(element[0]);
-            google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                scope.$apply(function() {
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                scope.$apply(function () {
                     model.$setViewValue(element.val());
                 });
                 var place = autocomplete.getPlace();
@@ -206,17 +202,12 @@ vokal.directive('googleplace', ['$rootScope', function($rootScope) {
 vokal.controller('dashboardController', ['$scope', '$rootScope', 'searchApi',
     function ($scope, $rootScope, searchApi) {
 
-        $scope.$on('placeDetail', function(event, place) {
-            $scope.place = formattedSearch(place);
-            createSearch();
-        });
-
         function formattedSearch(place) {
             return {
                 name: place.name || '',
                 address: place.formatted_address || '',
                 phoneNumber: place.formatted_phone_number || '',
-                location : {
+                location: {
                     lat: place.geometry ? place.geometry.location.lat() : '',
                     lng: place.geometry ? place.geometry.location.lng() : ''
                 },
@@ -237,61 +228,7 @@ vokal.controller('dashboardController', ['$scope', '$rootScope', 'searchApi',
             }
         }
 
-        $scope.setFieldType = function (index, type) {
-            if (type === null && $scope.space.fields[index].hasOwnProperty('done')) {
-                delete $scope.space.fields[index];
-                var position;
-                for (var i in $scope.fields) {
-                    if ($scope.fields[i] === index) {
-                        position = i;
-                        break;
-                    }
-                }
-                if (position) {
-                    $scope.fields.splice(position, 1);
-                }
-                return;
-            }
-            if ($scope.space.fields && $scope.space.fields.hasOwnProperty(index) && $scope.space.fields[index].name) {
-                $scope.space.fields[index].type = type;
-                if (type === null && $scope.space.fields[index].hasOwnProperty('done')) {
-                    delete $scope.space.fields[index].done;
-                }
-            } else {
-                $rootScope.$broadcast('toast', 'Add field name to confirm');
-            }
-        };
-
-        $scope.addFieldType = function (index) {
-            if ($scope.space.fields && $scope.space.fields[index].name) {
-                $scope.space.fields[index].done = true;
-                $scope.fields.push(index + 1);
-            } else {
-                $rootScope.$broadcast('toast', 'Add field name to confirm');
-            }
-        };
-
-        $scope.getBtnStatus = function () {
-            if (!$scope.space.fields) {
-                return true;
-            } else if (!Object.keys($scope.space.fields).length) {
-                return true;
-            }
-            var isDisabled = false;
-            for (var i in $scope.space.fields) {
-                var field = $scope.space.fields[i];
-                if (field && field.hasOwnProperty('name') && field.name === '') {
-                    continue;
-                } else if ((field && !field.hasOwnProperty('name') && field.name !== '')
-                    || (!field.hasOwnProperty('type')) || (!field.type || !field.name)) {
-                    isDisabled = true;
-                    break;
-                }
-            }
-            return isDisabled;
-        };
-
-        var createSearch = function () {
+        function createSearch() {
             searchApi.create($scope.place).then(function (result) {
                 if (result && result.hasOwnProperty('data')) {
                     $scope.searchData = result.data;
@@ -299,9 +236,9 @@ vokal.controller('dashboardController', ['$scope', '$rootScope', 'searchApi',
             }, function (error) {
 
             })
-        };
+        }
 
-        var getSearchDetail = function (status) {
+        function getSearchDetail() {
             searchApi.get().then(function (result) {
                 if (result && result.hasOwnProperty('data') && result.data) {
                     $scope.searchDetails = result.data;
@@ -309,7 +246,12 @@ vokal.controller('dashboardController', ['$scope', '$rootScope', 'searchApi',
             }, function (error) {
                 console.log(error);
             })
-        };
+        }
+
+        $scope.$on('placeDetail', function (event, place) {
+            $scope.place = formattedSearch(place);
+            createSearch();
+        });
 
         getSearchDetail();
 

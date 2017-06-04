@@ -2,8 +2,6 @@
  * Created by amit on 04/06/17.
  */
 const Search = require('../models').SearchDetails;
-const fs = require('fs');
-const utils = require('../utils');
 
 module.exports = {
     create(req, res) {
